@@ -2,13 +2,13 @@
 /*
 Plugin Name: Organize Series Addon - Extra Tokens
 Description: This addon for the Organize Series plugin provides Extra %tokens% for customizing the auto-inserted output of series related information.
-Version: 0.6
+Version: 0.7
 Author: Darren Ethier
 Author URI: http://organizeseries.com
 */
 
 /* LICENSE */
-//"Organize Series Plugin" and all addons for it created by this author are copyright (c) 2007-2011 Darren Ethier. This program is free software; you can redistribute it and/or
+//"Organize Series Plugin" and all addons for it created by this author are copyright (c) 2007-2012 Darren Ethier. This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
@@ -58,10 +58,9 @@ function orgseries_extra_tokens_check() {
 }
 
 function orgseries_extra_tokens_warning() {
-	global $orgser_extra_token_domain;
-	if ( !class_exists('orgSeries') ) $pluginmsg = __('Organize Series', $orgser_extra_token_domain);
+	if ( !class_exists('orgSeries') ) $pluginmsg = __('Organize Series', 'organize-series-extra-tokens');
 	
-	$msg = '<div id="wpp-message" class="error fade"><p>'.sprintf(__('The <strong>"Organize Series Extra Tokens"</strong> addon for Organize Series requires the %s plugin to be installed and activated in order to work.  This addon won\'t activate until this condition is met.', $orgser_extra_token_domain), $pluginmsg).'</p></div>';
+	$msg = '<div id="wpp-message" class="error fade"><p>'.sprintf(__('The <strong>"Organize Series Extra Tokens"</strong> addon for Organize Series requires the %s plugin to be installed and activated in order to work.  This addon won\'t activate until this condition is met.', 'organize-series-extra-tokens'), $pluginmsg).'</p></div>';
 	echo $msg;
 }
 
@@ -70,10 +69,8 @@ function orgseries_extra_tokens_deactivate() {
 }
 
 function orgseries_extra_tokens_register_textdomain() {
-	$orgser_extra_token_domain = 'organize-series-extra-tokens';
-	global $orgser_extra_token_domain;
 	$dir = basename(dirname(__FILE__)).'/lang';
-	load_plugin_textdomain($orgser_extra_token_domain, false, $dir);
+	load_plugin_textdomain('organize-series-extra-tokens', false, $dir);
 }
 
 function orgseries_extra_tokens($replace, $referral, $id, $p_id,  $ser_ID) {
@@ -92,24 +89,23 @@ function orgseries_extra_tokens($replace, $referral, $id, $p_id,  $ser_ID) {
 }
 
 function orgseries_extra_tokens_description() {
-	global $orgser_extra_token_domain;
 	?>
 	<br /><br />
 					
 	<strong>%series_slug%</strong><br />
-		<em><?php _e('Will display the slug for the series', $orgser_extra_token_domain); ?></em><br /><br />
+		<em><?php _e('Will display the slug for the series', 'organize-series-extra-tokens'); ?></em><br /><br />
 		
 	<strong>%series_id%</strong><br />
-	<em><?php _e('Will display the series id of the series', $orgser_extra_token_domain); ?></em><br /><br />
+	<em><?php _e('Will display the series id of the series', 'organize-series-extra-tokens'); ?></em><br /><br />
 	
 	<strong>%post_author%</strong><br />
-	<em><?php _e('Will display the post author of the post in the series', $orgser_extra_token_domain); ?></em><br /><br />
+	<em><?php _e('Will display the post author of the post in the series', 'organize-series-extra-tokens'); ?></em><br /><br />
 	
 	<strong>%post_thumbnail%</strong><br />
-	<em><?php _e('Will display the post thumbnail of a post belonging to the series', $orgser_extra_token_domain); ?></em><br /><br />
+	<em><?php _e('Will display the post thumbnail of a post belonging to the series', 'organize-series-extra-tokens'); ?></em><br /><br />
 	
 	<strong>%post_date%</strong><br />
-	<em><?php _e('Will display the published date of a post within a series', $orgser_extra_token_domain); ?></em><br /><br />
+	<em><?php _e('Will display the published date of a post within a series', 'organize-series-extra-tokens'); ?></em><br /><br />
 	<?php
 }
 
