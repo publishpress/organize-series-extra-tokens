@@ -48,7 +48,9 @@ if ( file_exists(WP_PLUGIN_DIR . '/organize-series/inc/pue-client.php') ) {
 add_action('init', 'orgseries_extra_tokens_register_textdomain');
 
 add_filter('post_orgseries_token_replace', 'orgseries_extra_tokens',10,5);
-add_action('orgseries_token_description','orgseries_extra_tokens_description');
+add_action('orgseries_token_description', 'orgseries_extra_tokens_description');
+//A hook for adding new template field to Series Options page
+add_action('plist_ptitle_template_unpublished', 'orgseries_extra_unpub_tfield');
 
 function orgseries_extra_tokens_check() {
 	if ( !class_exists('orgSeries') ) {
@@ -85,6 +87,10 @@ function orgseries_extra_tokens($replace, $referral, $id, $p_id,  $ser_ID) {
 		$replace = str_replace('%post_thumbnail%', token_get_thumbnail($p_id), $replace);
 	if( stristr($replace, '%post_date%') )
 		$replace = str_replace('%post_date%', token_post_date($id), $replace);
+	if( stristr($replace, '%post_title_list_with_unpub%') ) 
+		$replace = str_replace('%post_title_list_with_unpub%', series_unpub_post_title($id), $replace);
+	if( stristr($replace, '%total_posts_in_series_with_unpub%') ) 
+		$replace = str_replace('%total_posts_in_series_with_unpub%', wp_unpublished_postlist_count($ser_ID), $replace);
 	return $replace;
 }
 
@@ -106,6 +112,12 @@ function orgseries_extra_tokens_description() {
 	
 	<strong>%post_date%</strong><br />
 	<em><?php _e('Will display the published date of a post within a series', 'organize-series-extra-tokens'); ?></em><br /><br />
+	
+	<strong>%post_title_list_with_unpub%</strong><br />
+	<em><?php _e('The location token for where the contents of the post list (including unpublished posts) post templates will appear.', 'organize-series'); ?></em><br /><br />
+	
+	<strong>%total_posts_in_series_with_unpub%</strong><br />
+	<em><?php _e('Will display the total number of published and unpublished posts in a series', 'organize-series'); ?></em><br /><br />
 	<?php
 }
 
@@ -124,5 +136,36 @@ function token_get_thumbnail($p_id) {
 function token_post_date($p_id) {
 	$post_date = get_the_date($p_id);
 	return $post_date;
+}
+
+function orgseries_extra_unpub_tfield() {
+	global $orgseries;
+	$org_opt = $orgseries->settings;
+	$org_name = 'org_series_options';
+	?>
+		<strong><?php _e('Series Post List Post Title (unpublished) Template:', 'organize-series'); ?></strong><br />
+		<small><?php _e('Use this to indicate what html tags will surround the unpublished post title in the series post list.', 'organize-series'); ?></small><br />
+		<textarea name="<?php echo $org_name; ?>[series_post_list_unpublished_post_template]" id="series_post_list_unpublished_post_template" rows="4" class="template"><?php echo htmlspecialchars($org_opt['series_post_list_unpublished_post_template']); ?></textarea><br />
+		<br />
+	<?php
+}
+
+function series_unpub_post_title($post_ID) {
+	global $post;
+	if (!isset($post_ID))
+		$post_ID = (int)$post->ID;
+	$title = get_the_title($post_ID);
+	$return = $title.' ('.get_post_status($post_ID).')';
+	return $return;
+}
+
+function wp_unpublished_postlist_count($ser_id) {
+	$series = get_objects_in_term($ser_id, 'series');
+	if (!empty($series)) {
+		$postlist_count = count($series);
+	} else {
+		$postlist_count = 0;
+	}
+	return $postlist_count;
 }
 ?>
