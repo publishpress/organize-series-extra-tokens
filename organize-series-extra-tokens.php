@@ -51,6 +51,31 @@ add_filter('post_orgseries_token_replace', 'orgseries_extra_tokens',10,5);
 add_action('orgseries_token_description', 'orgseries_extra_tokens_description');
 //A hook for adding new template field to Series Options page
 add_action('plist_ptitle_template_unpublished', 'orgseries_extra_unpub_tfield');
+add_filter('orgseries_options', 'valid_unpub_post_template', 10, 2);
+add_filter('unpublished_post_template', 'unpub_token_replace', 10, 3);
+add_action('plugins_loaded', 'orgseries_extra_tokens_load_defaults', 5);
+add_action('wp_head', 'orgSeries_extra_header');
+
+function orgseries_extra_tokens_load_defaults() {
+    add_filter('org_series_settings', 'orgseries_extra_tokens_settings_defaults');
+}
+
+function orgseries_extra_tokens_settings_defaults($settings) {
+   $settings['series_post_list_unpublished_post_template'] = '<li class="serieslist-li-unpub">%unpublished_post_title%</li>';
+   return $settings;
+}
+
+function orgSeries_extra_header() {
+	$plugin_path = plugins_url('', __FILE__).'/';
+	$settings = get_option('org_series_options');
+	if ($settings['custom_css']) {
+		$csspath = $plugin_path.'orgSeries-extra.css';
+		$text = '<link rel="stylesheet" href="' . $csspath . '" type="text/css" media="screen" />';
+	} else {
+		$text = '';
+	}
+	echo $text;
+}
 
 function orgseries_extra_tokens_check() {
 	if ( !class_exists('orgSeries') ) {
@@ -87,8 +112,8 @@ function orgseries_extra_tokens($replace, $referral, $id, $p_id,  $ser_ID) {
 		$replace = str_replace('%post_thumbnail%', token_get_thumbnail($p_id), $replace);
 	if( stristr($replace, '%post_date%') )
 		$replace = str_replace('%post_date%', token_post_date($id), $replace);
-	if( stristr($replace, '%post_title_list_with_unpub%') ) 
-		$replace = str_replace('%post_title_list_with_unpub%', series_unpub_post_title($id), $replace);
+	if( stristr($replace, '%unpublished_post_title%') ) 
+		$replace = str_replace('%unpublished_post_title%', series_unpub_post_title($id), $replace);
 	if( stristr($replace, '%total_posts_in_series_with_unpub%') ) 
 		$replace = str_replace('%total_posts_in_series_with_unpub%', wp_unpublished_postlist_count($ser_ID), $replace);
 	return $replace;
@@ -113,8 +138,8 @@ function orgseries_extra_tokens_description() {
 	<strong>%post_date%</strong><br />
 	<em><?php _e('Will display the published date of a post within a series', 'organize-series-extra-tokens'); ?></em><br /><br />
 	
-	<strong>%post_title_list_with_unpub%</strong><br />
-	<em><?php _e('The location token for where the contents of the post list (including unpublished posts) post templates will appear.', 'organize-series'); ?></em><br /><br />
+	<strong>%unpublished_post_title%</strong><br />
+	<em><?php _e('Will be replaced with the unpublished post title of a post in the series', 'organize-series'); ?></em><br /><br />
 	
 	<strong>%total_posts_in_series_with_unpub%</strong><br />
 	<em><?php _e('Will display the total number of published and unpublished posts in a series', 'organize-series'); ?></em><br /><br />
@@ -148,6 +173,20 @@ function orgseries_extra_unpub_tfield() {
 		<textarea name="<?php echo $org_name; ?>[series_post_list_unpublished_post_template]" id="series_post_list_unpublished_post_template" rows="4" class="template"><?php echo htmlspecialchars($org_opt['series_post_list_unpublished_post_template']); ?></textarea><br />
 		<br />
 	<?php
+}
+
+function valid_unpub_post_template($newinput, $input) {
+	$newinput['series_post_list_unpublished_post_template'] = trim(stripslashes($input['series_post_list_unpublished_post_template']));
+	return $newinput;
+}
+
+function unpub_token_replace($settings, $seriespost = 0, $ser = 0) {
+	if($seriespost == 0)
+		return FALSE;
+	else {
+		$result = token_replace(stripslashes($settings['series_post_list_unpublished_post_template']), 'other', $seriespost['id'], $ser);
+		return $result;
+	}
 }
 
 function series_unpub_post_title($post_ID) {
