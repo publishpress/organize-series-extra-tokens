@@ -54,7 +54,7 @@ add_action('plist_ptitle_template_unpublished', 'orgseries_extra_unpub_tfield');
 add_filter('orgseries_options', 'valid_unpub_post_template', 10, 2);
 add_filter('unpublished_post_template', 'unpub_token_replace', 10, 3);
 add_action('plugins_loaded', 'orgseries_extra_tokens_load_defaults', 5);
-add_action('wp_head', 'orgSeries_extra_header');
+add_action( 'wp_enqueue_scripts', 'orgSeries_extra_style');
 
 function orgseries_extra_tokens_load_defaults() {
     add_filter('org_series_settings', 'orgseries_extra_tokens_settings_defaults');
@@ -65,16 +65,12 @@ function orgseries_extra_tokens_settings_defaults($settings) {
    return $settings;
 }
 
-function orgSeries_extra_header() {
-	$plugin_path = plugins_url('', __FILE__).'/';
+function orgSeries_extra_style() {
 	$settings = get_option('org_series_options');
 	if ($settings['custom_css']) {
-		$csspath = $plugin_path.'orgSeries-extra.css';
-		$text = '<link rel="stylesheet" href="' . $csspath . '" type="text/css" media="screen" />';
-	} else {
-		$text = '';
+		wp_register_style('extra-style', plugins_url('orgSeries-extra.css', __FILE__));
+		wp_enqueue_style('extra-style');
 	}
-	echo $text;
 }
 
 function orgseries_extra_tokens_check() {
