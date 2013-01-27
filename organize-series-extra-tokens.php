@@ -2,7 +2,7 @@
 /*
 Plugin Name: Organize Series Addon - Extra Tokens
 Description: This addon for the Organize Series plugin provides Extra %tokens% for customizing the auto-inserted output of series related information.
-Version: 0.7
+Version: 0.8
 Author: Darren Ethier
 Author URI: http://organizeseries.com
 */
