@@ -1,0 +1,20 @@
+{
+  "name": "organize-series/organize-series-extra-tokens",
+  "description": "An add-on for Organize Series that adds extra tokens for usage in Organize Series templates.",
+  "type": "wordpress-plugin",
+  "keywords": ["wordpress", "plugin", "organize-series", "organize-series-extension"],
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "Darren Ethier",
+      "email": "darren@roughsmootheng.in"
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "composer/installers": "v1.0.6"
+  },
+  "autoload": {
+    "psr-4": {"OrganizeSeries\\ExtraTokensAddon\\": "src/"}
+  }
+}
