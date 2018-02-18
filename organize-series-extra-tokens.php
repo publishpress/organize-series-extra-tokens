@@ -26,6 +26,7 @@ Author URI: http://organizeseries.com
 
 define('OS_ET_VERSION', '0.8.1');
 $plugin_path = plugin_dir_path(__FILE__);
+require __DIR__ . '/vendor/autoload.php';
 
 /**
  * This takes allows OS core to take care of the PHP version check
