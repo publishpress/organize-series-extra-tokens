@@ -2,7 +2,7 @@
 /*
 Plugin Name: Organize Series Addon - Extra Tokens
 Description: This addon for the Organize Series plugin provides Extra %tokens% for customizing the auto-inserted output of series related information.
-Version: 0.8.2
+Version: 0.8.3.rc.000
 Author: Darren Ethier
 Author URI: http://organizeseries.com
 */
@@ -24,7 +24,7 @@ Author URI: http://organizeseries.com
 //
 //It goes without saying that this is a plugin for WordPress and I have no interest in developing it for other platforms so please, don't ask ;).
 
-define('OS_ET_VERSION', '0.8.2');
+define('OS_ET_VERSION', '0.8.3.rc.000');
 $plugin_path = plugin_dir_path(__FILE__);
 require __DIR__ . '/vendor/autoload.php';
 
