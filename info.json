@@ -1,18 +1,1 @@
-{
-  "versionFile":"organize-series-extra-tokens.php",
-  "slug":"organize-series-extra-tokens",
-  "textDomain": "organize-series-extra-tokens",
-  "name": "Organize Series Extra Tokens",
-  "releaseFilesRemove": [
-    "src/tests/**",
-    "src/acceptance_tests/**",
-    "src/docs/**",
-    "src/info.json",
-    "src/readme.txt",
-    "src/wp-assets/**",
-    "src/.travis.yml",
-    "src/ISSUE_TEMPLATE.md",
-    "src/PULL_REQUEST_TEMPLATE.md",
-    "src/assets/src/**"
-  ]
-}
+{"versionFile":"organize-series-extra-tokens.php","slug":"organize-series-extra-tokens","textDomain":"organize-series-extra-tokens","name":"Organize Series Extra Tokens","releaseFilesRemove":["src\/tests\/**","src\/acceptance_tests\/**","src\/docs\/**","src\/info.json","src\/readme.txt","src\/wp-assets\/**","src\/.travis.yml","src\/ISSUE_TEMPLATE.md","src\/PULL_REQUEST_TEMPLATE.md","src\/assets\/src\/**"],"wpOrgRelease":"0.8.2"}
